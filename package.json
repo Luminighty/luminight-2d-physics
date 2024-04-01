@@ -1,0 +1,23 @@
+{
+  "name": "@luminight/2d-physics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "rm -r -d dist/",
+    "build": "tsc",
+    "example": "node example.local.js"
+  },
+  "author": "Luminight (http://luminight.dev/)",
+  "repository": {
+    "url": "https://github.com/Luminighty/luminight-2d-physics"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
+  }
+}
