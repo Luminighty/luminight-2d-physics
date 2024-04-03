@@ -29,4 +29,3 @@ export const Vector2 = {
 
 	get zero(): IVector2 { return {x: 0, y: 0} }
 }
-

@@ -1,13 +1,12 @@
 import { IVector2, Vector2 } from "../utils/vector";
-import { IdGenerator } from "../utils/id";
 import { Collider, ColliderId, ColliderMode } from "./collider";
 import { CollisionStrategy } from "./strategy";
 
 
 export class PhysicsServer<Shape> {
 	colliders: Collider<Shape>[] = []
+	colliderMap: Record<ColliderId, Collider<Shape>> = {}
 	events = {}
-	nextId = IdGenerator()
 
 	constructor(
 		private strategy: CollisionStrategy<Shape>,
@@ -16,23 +15,23 @@ export class PhysicsServer<Shape> {
 	}
 
 	find(uuid: number) {
-		return this.colliders.find((collider) => collider.uuid === uuid)
+		return this.colliderMap[uuid]
 	}
 
 	add(
+		uuid: ColliderId,
 		shape: Shape, 
 		offset: IVector2,
 		mode = ColliderMode.Dynamic,
 		layers = 0,
 		enabled = true
-	): ColliderId {
-		const uuid = this.nextId()
-
-		this.colliders.push({
+	) {
+		const collider = {
 			uuid, shape, offset, 
 			mode, layers, enabled
-		})
-		return uuid
+		}
+		this.colliders.push(collider)
+		this.colliders[uuid] = collider
 	}
 
 	remove(uuid: ColliderId) {
@@ -40,6 +39,7 @@ export class PhysicsServer<Shape> {
 		if (index < 0)
 			return
 		this.colliders.splice(index, 1)
+		delete this.colliderMap[uuid]
 	}
 
 	updateOffset(uuid: number, offset: IVector2) {
@@ -70,9 +70,13 @@ export class PhysicsServer<Shape> {
 
 	applyCollision(collider: Collider<Shape>, offset: IVector2) {
 		collider.offset = Vector2.sub(collider.offset, offset)
-		if (!this.events[collider.uuid])
-			this.events[collider.uuid] = {}
-		this.events[collider.uuid]["offset"] = collider.offset
+		this.addEvent(collider.uuid, "offset", collider.offset)
+	}
+
+	private addEvent(uuid: ColliderId, key: string, value: unknown) {
+		if (!this.events[uuid])
+			this.events[uuid] = {}
+		this.events[uuid][key] = value
 	}
 
 	clearEvents() {
