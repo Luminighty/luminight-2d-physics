@@ -1,13 +1,14 @@
 {
   "name": "@luminight/2d-physics",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -r -d dist/",
     "build": "tsc",
-    "example": "node example.local.js"
+    "example": "node example.local.js",
+    "test": "jest"
   },
   "author": "Luminight (http://luminight.dev/)",
   "repository": {
@@ -15,6 +16,8 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",

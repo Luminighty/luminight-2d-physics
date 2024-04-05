@@ -31,7 +31,7 @@ export class PhysicsServer<Shape> {
 			mode, layers, enabled
 		}
 		this.colliders.push(collider)
-		this.colliders[uuid] = collider
+		this.colliderMap[uuid] = collider
 	}
 
 	remove(uuid: ColliderId) {
@@ -71,6 +71,7 @@ export class PhysicsServer<Shape> {
 	applyCollision(collider: Collider<Shape>, offset: IVector2) {
 		collider.offset = Vector2.sub(collider.offset, offset)
 		this.addEvent(collider.uuid, "offset", collider.offset)
+		this.addEvent(collider.uuid, "isCollided", true)
 	}
 
 	private addEvent(uuid: ColliderId, key: string, value: unknown) {
