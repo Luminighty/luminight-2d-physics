@@ -15,3 +15,15 @@ export interface Collider<Shape> {
 	mode: ColliderMode,
 	enabled: boolean
 }
+
+
+export type CollisionEvent = Partial<ICollisionEvent> & Partial<CollisionOffsetEvent>
+
+interface ICollisionEvent {
+	isCollided: boolean
+}
+
+interface CollisionOffsetEvent {
+	offset: IVector2,
+	deltaOffset: IVector2,
+}

@@ -1,12 +1,12 @@
 import { IVector2, Vector2 } from "../utils/vector";
-import { Collider, ColliderId, ColliderMode } from "./collider";
+import { Collider, ColliderId, ColliderMode, CollisionEvent } from "./collider";
 import { CollisionStrategy } from "./strategy";
 
 
 export class PhysicsServer<Shape> {
 	colliders: Collider<Shape>[] = []
 	colliderMap: Record<ColliderId, Collider<Shape>> = {}
-	events = {}
+	events: Record<ColliderId, CollisionEvent> = {}
 
 	constructor(
 		private strategy: CollisionStrategy<Shape>,
@@ -25,13 +25,14 @@ export class PhysicsServer<Shape> {
 		mode = ColliderMode.Dynamic,
 		layers = 0,
 		enabled = true
-	) {
+	): Collider<Shape> {
 		const collider = {
 			uuid, shape, offset, 
 			mode, layers, enabled
 		}
 		this.colliders.push(collider)
 		this.colliderMap[uuid] = collider
+		return collider
 	}
 
 	remove(uuid: ColliderId) {
@@ -71,6 +72,7 @@ export class PhysicsServer<Shape> {
 	applyCollision(collider: Collider<Shape>, offset: IVector2) {
 		collider.offset = Vector2.sub(collider.offset, offset)
 		this.addEvent(collider.uuid, "offset", collider.offset)
+		this.addEvent(collider.uuid, "deltaOffset", offset)
 		this.addEvent(collider.uuid, "isCollided", true)
 	}
 
