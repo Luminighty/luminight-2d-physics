@@ -1,6 +1,6 @@
 {
   "name": "@luminight/2d-physics",
-  "version": "1.0.6",
+  "version": "1.0.9",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,8 @@
     "clean": "rm -r -d dist/",
     "build": "tsc",
     "example": "node example.local.js",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm run build && npm test"
   },
   "author": "Luminight (http://luminight.dev/)",
   "repository": {

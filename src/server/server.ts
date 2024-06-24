@@ -72,8 +72,12 @@ export class PhysicsServer<Shape> {
 	applyCollision(collider: Collider<Shape>, offset: IVector2) {
 		collider.offset = Vector2.sub(collider.offset, offset)
 		this.addEvent(collider.uuid, "offset", collider.offset)
-		this.addEvent(collider.uuid, "deltaOffset", offset)
 		this.addEvent(collider.uuid, "isCollided", true)
+		let deltaOffset = offset
+		const otherDeltaOffset = this.events[collider.uuid].deltaOffset
+		if (otherDeltaOffset)
+			deltaOffset = Vector2.add(deltaOffset, otherDeltaOffset)
+		this.events[collider.uuid].deltaOffset = deltaOffset
 	}
 
 	private addEvent(uuid: ColliderId, key: string, value: unknown) {

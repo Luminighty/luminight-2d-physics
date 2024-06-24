@@ -10,10 +10,10 @@ export const Vector2 = {
 	div: (self: IVector2, scale: number): IVector2 => Vector2.new(self.x / scale, self.y / scale),
 	
 	/** (a, b) => (-a, -b) */
-	neg: (self: IVector2): IVector2 => Vector2.scalar(-1, self),
+	neg: (self: IVector2): IVector2 => Vector2.new(-self.x, -self.y),
 
 	/** A - B => (A.x - B.x, A.y - B.y) */
-	sub: (left: IVector2, right: IVector2): IVector2 => Vector2.add(left, Vector2.neg(right)),
+	sub: (left: IVector2, right: IVector2): IVector2 => Vector2.new(left.x - right.x, left.y - right.y),
 
 	/** A · B = A.x * B.x + A.y * B.y */
 	dot: (left: IVector2, right: IVector2) => left.x * right.x + left.y * right.y,

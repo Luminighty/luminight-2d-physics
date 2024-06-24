@@ -15,7 +15,7 @@ export class DummyStrategy implements CollisionStrategy<Rect> {
 	checkCollision(self, other) {
 		this.onCheckCollision?.(self, other)
 		if (this.collisionResult)
-			this.server.applyCollision(self, this.collisionResult)
+			this.server.applyCollision(self, {...this.collisionResult})
 	}
 }
 
@@ -63,6 +63,7 @@ test("server events", () => {
 	dummy.collisionResult = { x: 3, y: 2 }
 	server.checkCollision(colB)
 	expect(onCheckCollisionFn).toHaveBeenCalledWith(colB, [colA])
+	expect(onCheckCollisionFn).toBeCalledTimes(2)
 	expect(server.events).toStrictEqual({
 		'1': {
 			offset: {x: 7, y: 8},
